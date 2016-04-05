@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4674" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "Obra": "SAA Barra da Espingarda", "Fonte": "Superficial", "Nome": "Reservatório Passagem das Traíras", "Vazao_l_h": 4680.000000, "Descricao": "Sistema deriva (8km) do atual Sistema Adutor Jardim do Seridó que capta água na Barragem Passagem das Traíras.", "Familias": 122.000000, "Dt_Ent_Obr": 2014.000000 }, "geometry": { "type": "Point", "coordinates": [ -37.001868266048042, -6.527994021013117 ] } },
+{ "type": "Feature", "properties": { "Obra": "SAA Palma", "Fonte": "Superficial", "Nome": "Reservatório Carnaúba", "Vazao_l_h": 5250.000000, "Descricao": "Sistema composto por Captação, Tratamento, Adutora de Água Tratada (18,7Km), Stand Pipe, Reservatório e Rede de Distribuição", "Familias": 128.000000, "Dt_Ent_Obr": 2014.000000 }, "geometry": { "type": "Point", "coordinates": [ -37.045837527926935, -6.651663518039563 ] } },
+{ "type": "Feature", "properties": { "Obra": "SAA Laginhas", "Fonte": "Superficial", "Nome": "Rio Piranhas Açu", "Vazao_l_h": 2412.000000, "Descricao": "Sistema composto por Captação, Tratamento, Adutora de Água Tratada (16,47Km), Stand Pipe, Reservatório e Rede de Distribuição", "Familias": 198.000000, "Dt_Ent_Obr": 2014.000000 }, "geometry": { "type": "Point", "coordinates": [ -37.052367127148948, -6.249693561953157 ] } }
+]
+}
