@@ -88,6 +88,15 @@
             font-size: 12px;
             font-family: Arial, sans-serif;
         }
+        #legend3
+        {
+            background: #F0F2F5;
+            border: 1px dashed;
+            padding: 3px 5px 5px 5px;
+            margin: 5px;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+        }
         .modalload
         {
             position: fixed;
@@ -383,6 +392,19 @@
                                                         map: map
                                                         municipios.setMap(map);
                                                         createClickablePolyGEO(municipios, map);
+                                                         //Legendas Municípios
+                                                          var legend = document.createElement('div');
+                                                       legend.id = 'legend3';
+                                                        var content = [];
+                                                        content.push('<h3>Municípios</h3>' + '<hr>');
+                                                        
+                                                        content.push('<div  class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso.png"></img>&nbsp;&nbsp;Municípos em Colapso</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso1606.png"></img>&nbsp;&nbsp;Colapso em 16/06/16</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso1702.png"></img>&nbsp;&nbsp;Colapso em 17/02/17</div>' + '<br>');
+                                                        
+                                                        legend.innerHTML = content.join('');
+                                                        legend.index = 1;
+                                                        map.controls[google.maps.ControlPosition.LEFT_TOP].push(legend);
 
                                                         function createClickablePolyGEO(poly, map) {
                                                             var infoWindowGEO = new google.maps.InfoWindow();
@@ -1223,7 +1245,16 @@
                                                         
                                                          barragens.setStyle(function(feature){
                                                         var iconebar;
+                                                        if(feature.getProperty('dominio')=='Público'){
                                                         iconebar='images/marcadores/Barragens.png';
+                                                        }
+                                                        if(feature.getProperty('dominio')=='Sem informação'){
+                                                        iconebar='images/marcadores/Barragensseminfo.png';
+                                                        }
+                                                        if(feature.getProperty('dominio')=='Privado'){
+                                                        iconebar='images/marcadores/Barragensprivadas.png';
+                                                        }
+                                                        
                                                         
                                                         
                               
