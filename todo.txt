@@ -1,0 +1,2 @@
+-Adicionar ao sistema as novas camadas[eta_caern_rn, ete_caern_rn, pocos_caern_rn, pocos_semarh_2016_rb, pocos_semarh_n_instalados_rn, barragens_sub_semarh_rn]
+-Adicionar Legendas parada cada campo *Verificar forma de individualizar cada legenda*
