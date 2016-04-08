@@ -1324,7 +1324,9 @@
                                                         <img src="images/marcadores/OutorgasIgarnDispensa.png" />Outorgas - IGARN (Dispensa)<br />
                                                         <img src="images/marcadores/MonitoramentoSub.png" />Pontos de Monitramento Subterrâneos<br />
                                                         <img src="images/marcadores/MonitoramentoSup.png" />Pontos de Monitramento Superficiais<br />
-                                                        <img src="images/marcadores/Barragens.png" />Barragens<br />
+                                                        <img src="images/marcadores/Barragens.png" />Barragens de Domínio Público<br />
+                                                        <img src="images/marcadores/Barragensprivadas.png" />Barragens de Domínio Privado<br />
+                                                        <img src="images/marcadores/Barragensseminfo.png" />Barragens sem informação de Domínio<br />
                                                     </div>
                                                 </asp:Panel>
                                             </ContentTemplate>
