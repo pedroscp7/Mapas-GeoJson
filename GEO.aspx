@@ -16,7 +16,7 @@
             System.Threading.Thread.Sleep(5000)
            
         End If
-        If (checkpcd.Checked = True Or checkabastecimento.Checked = True Or checkpocos.Checked = True Or checkdessalinizadores.Checked = True Or checkoutorgas.Checked = True Or checkmonitoramento.Checked = True Or checkbarragens.Checked = True) Then
+        If (checkpcd.Checked = True Or checkabastecimento.Checked = True Or checkpocos.Checked = True Or checkdessalinizadores.Checked = True Or checkoutorgas.Checked = True Or checkmonitoramento.Checked = True Or checkbarragens.Checked = True Or checkbarsub.Checked = True) Then
             PanelLegendaImg.Visible = True
         End If
     End Sub
@@ -212,8 +212,7 @@
                     <li><a><i class="fa fa-map-marker fa-fw">
                         <div class="icon-bg"></div>
                     </i><input id="checkdessalinizadores" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkdessalinizadores\',\'\')', 0);" type="checkbox" class="vis-hidden new-post-tags" />
-<label for="checkdessalinizadores" class="menu-title">Dessalinizadores</label>
-</a>
+<label for="checkdessalinizadores" class="menu-title">PAD - Dessalinizadores</label></a>
                     </li>   
                     
                     <li><a><i class="fa fa-map-marker fa-fw">
@@ -232,6 +231,24 @@
                         <div class="icon-bg"></div>
                         </i><input id="checkbarragens" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkbarragens\',\'\')', 0);" type="checkbox" class="vis-hidden new-post-tags" />
 <label for="checkbarragens" class="menu-title">Barragens</label></a>
+                     </li>
+                     
+                     <li><a><i class="fa fa-map-marker fa-fw">
+                        <div class="icon-bg"></div>
+                        </i><input id="checkbarsub" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkbarsub\',\'\')', 0);" type="checkbox" class="vis-hidden new-post-tags" />
+<label for="checkbarsub" class="menu-title">PSP - Bar. Subterraneas</label></a>
+                     </li>
+                     
+                     <li><a><i class="fa fa-map-marker fa-fw">
+                        <div class="icon-bg"></div>
+                        </i><input id="checkete" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkete\',\'\')', 0);" type="checkbox" class="vis-hidden new-post-tags" />
+<label for="checkete" class="menu-title">CAERN ETE's</label></a>
+                     </li>
+                     
+                     <li><a><i class="fa fa-map-marker fa-fw">
+                        <div class="icon-bg"></div>
+                        </i><input id="checketa" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checketa\',\'\')', 0);" type="checkbox" class="vis-hidden new-post-tags" />
+<label for="checketa" class="menu-title">CAERN ETA's</label></a>
                      </li>
                 </ul>
                 
@@ -260,7 +277,7 @@
                                     </div>
                                     <div class="modal-body" style="background-color: #CDDFE6">
                                         <ul id="explicacao">
-                                            <li style="color: #242424">O SIGERH funciona a partir da sobreposição de camadas de
+                                            <li style="color: #242424">O SIGHMA funciona a partir da sobreposição de camadas de
                                                 mapas;</li>
                                             <li style="color: #242424">O menu lateral é o responsável pelo controle das camadas;</li>
                                             <li style="color: #242424">Por padrão a Camada "Municípios" já vem setada ao se carregar
@@ -1291,6 +1308,100 @@
                                                             });
                                                         }
                                                     }
+                                                    //PSP-Barragens subterrâneas
+                                                           if (document.getElementById('checkbarsub').checked == true) {
+                                                        var barsub = new google.maps.Data();
+                                                        barsub.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/barragens_sub_semarh_rn.geojson');
+                                                        
+
+                                                        map: map
+                                                        barsub.setMap(map);
+                                                        createClickableMarkerBarragensSub(barsub, map);
+                                                        
+                                                         barsub.setStyle(function(feature){
+                                                        var iconebarsub;
+                                                            iconebarsub='images/marcadores/Barsub.png';
+                                                        
+                                                       return({
+		                                                    icon: iconebarsub
+		                                                    })
+                                                        });
+
+                                                        function createClickableMarkerBarragensSub(marker, map) {
+                                                           
+                                                            var infoWindowBarragensSub = new google.maps.InfoWindow();
+                                                            google.maps.event.addListener(marker, 'click', function(event) {
+                                                            var htmlbarsub = '<h3 style="color:#3E77AB">' + event.feature.getProperty("Localizaç") + '</h3>' + '<hr>';
+                                                                htmlbarsub += '<strong>Localidade:</strong> ' + event.feature.getProperty("Comunidade") + '</br>';
+                                                                htmlbarsub += '<strong>Beneficiário:</strong> ' + event.feature.getProperty("Beneficiar") + '</br>';
+                                                                
+                                                                infoWindowBarragensSub.setContent(htmlbarsub);
+                                                                infoWindowBarragensSub.setPosition(event.latLng);
+                                                                infoWindowBarragensSub.open(map);
+                                                            });
+                                                        }
+                                                    }
+                                                      //ETE'S
+                                                      if (document.getElementById('checkete').checked == true) {
+                                                        var ete = new google.maps.Data();
+                                                        ete.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/ete_caern_rn.geojson');
+                                                        
+
+                                                        map: map
+                                                        ete.setMap(map);
+                                                        createClickableMarkerEte(ete, map);
+                                                        
+                                                         
+
+                                                        function createClickableMarkerEte(marker, map) {
+                                                           
+                                                            var infoWindowEte = new google.maps.InfoWindow();
+                                                            google.maps.event.addListener(marker, 'click', function(event) {
+                                                            var htmlete = '<h3 style="color:#3E77AB">' + event.feature.getProperty("DEN") + '</h3>' + '<hr>';
+                                                                htmlete += '<strong>Localidade:</strong> ' + event.feature.getProperty("END") + '</br>';
+                                                                htmlete += '<strong>Ano de Ativação:</strong> ' + event.feature.getProperty("AAT") + '</br>';
+                                                                htmlete += '<strong>Vazão de Projeto:</strong> ' + event.feature.getProperty("VPR") + '</br>';
+                                                                htmlete += '<strong>Vazão Atual de Operação:</strong> ' + event.feature.getProperty("VAO") + '</br>';
+                                                                htmlete += '<strong>Tipo de Tratamento:</strong> ' + event.feature.getProperty("TTR") + '</br>';
+                                                                htmlete += '<strong>Destino:</strong> ' + event.feature.getProperty("DES") + '</br>';
+                                                                htmlete += '<strong>Regional:</strong> ' + event.feature.getProperty("REG") + '</br>';
+                                                                
+                                                                infoWindowEte.setContent(htmlete);
+                                                                infoWindowEte.setPosition(event.latLng);
+                                                                infoWindowEte.open(map);
+                                                            });
+                                                        }
+                                                    }     
+                                                    //ETA's
+                                                    if (document.getElementById('checketa').checked == true) {
+                                                        var eta = new google.maps.Data();
+                                                        eta.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/eta_caern_rn.geojson');
+                                                        
+
+                                                        map: map
+                                                        eta.setMap(map);
+                                                        createClickableMarkerEta(eta, map);
+                                                        
+                                                         
+
+                                                        function createClickableMarkerEta(marker, map) {
+                                                           
+                                                            var infoWindowEta = new google.maps.InfoWindow();
+                                                            google.maps.event.addListener(marker, 'click', function(event) {
+                                                            var htmleta = '<h3 style="color:#3E77AB">' + event.feature.getProperty("DEN") + '</h3>' + '<hr>';
+                                                                htmleta += '<strong>Localidade:</strong> ' + event.feature.getProperty("END") + '</br>';
+                                                                htmleta += '<strong>Ano de Ativação:</strong> ' + event.feature.getProperty("AAT") + '</br>';
+                                                                htmleta += '<strong>Vazão de Projeto:</strong> ' + event.feature.getProperty("VPR") + '</br>';
+                                                                htmleta += '<strong>Vazão Atual de Operação:</strong> ' + event.feature.getProperty("VAO") + '</br>';
+                                                                htmleta += '<strong>Tipo de Tratamento:</strong> ' + event.feature.getProperty("TTR") + '</br>';
+                                                                htmleta += '<strong>Regional:</strong> ' + event.feature.getProperty("REG") + '</br>';
+                                                                
+                                                                infoWindowEta.setContent(htmleta);
+                                                                infoWindowEta.setPosition(event.latLng);
+                                                                infoWindowEta.open(map);
+                                                            });
+                                                        }
+                                                    }     
                                                            }
                                             
                                                    
@@ -1327,6 +1438,7 @@
                                                         <img src="images/marcadores/Barragens.png" />Barragens de Domínio Público<br />
                                                         <img src="images/marcadores/Barragensprivadas.png" />Barragens de Domínio Privado<br />
                                                         <img src="images/marcadores/Barragensseminfo.png" />Barragens sem informação de Domínio<br />
+                                                        <img src="images/marcadores/Barsub.png" />PSP - Barragens Subterraneas<br />
                                                     </div>
                                                 </asp:Panel>
                                             </ContentTemplate>
