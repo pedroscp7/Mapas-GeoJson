@@ -108,6 +108,7 @@
             filter: alpha(opacity=60);
             opacity: 0.8;
             -moz-opacity: 0.8;
+            
         }
         .centerload
         {
@@ -371,7 +372,7 @@
  
                                                       if (document.getElementById('checkmunicipios').checked == true)  {  
                                                         var municipios = new google.maps.Data();
-                                                        municipios.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/municipios.geojson');
+                                                        municipios.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/municipios_rn3.geojson');
 
 
                                                         municipios.setStyle(function(feature){
@@ -430,6 +431,8 @@
                                                                 htmlgeo += '<strong>População:</strong> ' + event.feature.getProperty("POPULACAO") + '</br>';
                                                                 htmlgeo += '<strong>Área(km<sup>2</sup>):</strong> ' + event.feature.getProperty("AREA_KM") + '</br>';
                                                                 htmlgeo += '<strong>Densidade Demográfica(hab/km<sup>2</sup>):</strong> ' + event.feature.getProperty("DENSIDADE") + '</br>';
+                                                                htmlgeo += '<strong>Link do Documento:</strong> ' + event.feature.getProperty("link") + '</br>';
+
                                                                 if (event.feature.getProperty('Situacao') == null) {
                                                                 htmlgeo += '<strong>Situação de Abastecimento:</strong> ' + "Sem Previsão de Colapso" + '</br>';
                                                                 } else {
@@ -440,13 +443,7 @@
                                                                 } else {
                                                                 htmlgeo += '<strong>Situação de Emergência:</strong> ' + "Sem Emergênica Detectada" + '</br>';
                                                                 }
-                                                                 if (event.feature.getProperty('NOME') == 'Caicó') { 
-                                                                 var linkcaico = 'https://dl.dropboxusercontent.com/u/26549106/Relat%C3%B3rio%20-%20Caic%C3%B3%20(prot%C3%B3tipo).pdf';
-                                                                 htmlgeo += '<strong>Relatório:</strong> '+ '<a target="_blank" href="' + linkcaico + '">' + 'Link do Relatório' + '</a>'  + '</br>';
-
- 
                                                                  
-                                                                }
                                                                 infoWindowGEO.setContent(htmlgeo);
                                                                 infoWindowGEO.setPosition(event.latLng);
                                                                 infoWindowGEO.open(map);
@@ -493,6 +490,7 @@
                                                             });
                                                         }
                                                     }
+
 
                                                     // Poços
 
@@ -1045,17 +1043,25 @@
                                                        adutoras.setStyle(function(feature) {
                                                             var color = 'white';
                                                             
-                                                            switch (feature.getProperty('Situacao')){
-                                                                case 'Em Operação':
-                                                                color = '#27C327';
+                                                            switch (feature.getProperty('Situação')){
+                                                                case 'ADUTORA EXISTENTE':
+                                                                color = '#0084a8';
                                                                 break;
                                                                 
-                                                                case 'Em Fase de Projeto':
-                                                                color = '#E71F36';
+                                                                case 'ADUTORA IMPLANTAÇÃO/CONCLUSÃO':
+                                                                color = '#ff5500';
                                                                 break;
                                                                 
-                                                                case 'Em Execução':
-                                                                color = '#F1B513';
+                                                                case 'ADUTORA DE ENGATE RÁPIDO EXISTENTE':
+                                                                color = '#4ce600';
+                                                                break;
+                                                                
+                                                                case 'ADUTORA EMERGENCIAL':
+                                                                color = '#00ffc5';
+                                                                break;
+                                                                
+                                                                case 'ADUTORAS A SEREM IMPLANTADAS':
+                                                                color = '#ff0000';
                                                                 break;
                                                                 
                                                                 
@@ -1064,7 +1070,7 @@
                                                             }
                                                             return ({
                                                                 strokeColor: color,
-                                                                strokeWeight: 2.5
+                                                                strokeWeight: 2.8
                                                             })
 
                                                         });
@@ -1075,12 +1081,13 @@
                                                         function createClickablePolyAdutoras(poly, map) {
                                                             var infoWindowAdutoras = new google.maps.InfoWindow();
                                                             google.maps.event.addListener(poly, 'click', function(event) {
-                                                                var htmlad = '<h3 style="color:#3E77AB">' + event.feature.getProperty("ADUTORA") + '</h3>' + '<hr>';
+                                                                var htmlad = '<h3 style="color:#3E77AB">' + event.feature.getProperty("Adutora") + '</h3>' + '<hr>';
                                                                 htmlad += '<strong>Atendimento populacional:</strong> ' + event.feature.getProperty("POPATEND") + '</br>'+ '</br>';
                                                                 htmlad += '<strong>Captação:</strong> ' + event.feature.getProperty("CAPTAÇÃO") + '</br>'+ '</br>';
                                                                 htmlad += '<strong>Extensão:</strong> ' + event.feature.getProperty("EXTENSÃO") + '</br>'+ '</br>';
                                                                 htmlad += '<strong>Vazão(m<sup>3</sup>/h):</strong> ' + event.feature.getProperty("VAZÃO") + '</br>'+ '</br>';
-                                                                htmlad += '<strong>Situação:</strong> ' + event.feature.getProperty("Situacao") + '</br>'+ '</br>';
+                                                                htmlad += '<strong>Situação:</strong> ' + event.feature.getProperty("Situação") + '</br>'+ '</br>';
+                                                                htmlad += '<strong>Construção:</strong> ' + event.feature.getProperty("Construcao") + '</br>'+ '</br>';
 
                                                                 infoWindowAdutoras.setContent(htmlad);
                                                                 infoWindowAdutoras.setPosition(event.latLng);
