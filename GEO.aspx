@@ -27,7 +27,7 @@
 </script>
 
 <html>
-<head runat="server">
+<head id="Head1" runat="server">
     <title>SIGHMA - Sistema Integrado de Georreferenciamento Hídrico e de Meio Ambiente
     </title>
     <meta charset="utf-8">
@@ -151,7 +151,7 @@
     </asp:UpdateProgress>
     <div>
         <div id="wrapper">
-            <nav id="sidebar" role="navigation" data-step="2" data-intro="SIGERH" data-position="right"
+            <nav id="sidebar" role="navigation" data-step="2" data-intro="SIGHMA" data-position="right"
                 class="navbar-default navbar-static-side">
             <div class="sidebar-collapse menu-scroll">
              <img class="img-responsive center-block" src="images/semarh.png" />
@@ -273,7 +273,7 @@
                                     <div class="modal-header" style="background-color: #D2E4C8">
                                         <asp:LinkButton ID="BotaoFecharAjuda" class="close" runat="server" Text="×" CausesValidation="false" />
                                         <h4 class="modal-title" style="background-color: #D2E4C8">
-                                            <b>AJUDA SIGERH</b></h4>
+                                            <b>AJUDA SIGHMA</b></h4>
                                     </div>
                                     <div class="modal-body" style="background-color: #CDDFE6">
                                         <ul id="explicacao">
@@ -293,7 +293,7 @@
                                         </ul>
                                         <hr />
                                         <h4>
-                                            <b>Vejamos abaixo um exemplo de utilização do SIGERH:</b></h4>
+                                            <b>Vejamos abaixo um exemplo de utilização do SIGHMA:</b></h4>
                                         <ul id="fluxo">
                                             <li style="color: #242424">Tomemos como exemplo a situação em que o usuário quer visualizar
                                                 os poços e as bacias hidrográficas que servem a cidade de Caicó;</li>
@@ -326,8 +326,7 @@
 
                                             <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 
-                                            <script type="text/javascript src="http://dwellcation.com/markerclusterer_packed.js"></script>
-
+                                            <script type="text/javascript" src="http://dwellcation.com/markerclusterer_packed.js"></script>
 
                                             <script>
                 var prm = Sys.WebForms.PageRequestManager.getInstance(); 
@@ -501,7 +500,6 @@
 
                                                         var pocos = new google.maps.Data();
                                                         pocos.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/pocos.geojson');
-                                                        
                                                         pocos.setStyle(function(feature){
                                                         var iconep;
                                                         if(feature.getProperty('Orig_inf') == 'INCRA'){
@@ -553,10 +551,122 @@
                                                                 infoWindowPocos.setPosition(event.latLng);
                                                                 infoWindowPocos.open(map);
                                                             });
-                                                        }      
-                                                     
+                                                        }                                                         
+                                                         
+                                                        var pocoscaern = new google.maps.Data();
+                                                        pocoscaern.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/pocos_caern_rn.geojson');
+                                                        pocoscaern.setStyle(function(feature){
+                                                        var iconepcaern;
+                                                       
+                                                        iconepcaern='images/marcadores/pocosCAERN.png';
                                                         
+                                                        
+                                                        
+                              
+                                    
+                                                        return({
+		                                                    icon: iconepcaern
+		                                                    })
+                                                        });
+                                                        
+  
+                                                        map: map
+                                                        pocoscaern.setMap(map);
+                                                        createClickableMarkerPCaern(pocoscaern, map);
+                                                        function createClickableMarkerPCaern(marker, map) {
+                                                            var infoWindowPocosCaern = new google.maps.InfoWindow();
+                                                            google.maps.event.addListener(marker, 'click', function(event) {
+                                                                var htmlpcaern = '<h3 style="color:#3E77AB">' + event.feature.getProperty("DEN") + '</h3>' + '<hr>';
+                                                                htmlpcaern += '<strong>Companhia de Perfuração:</strong> ' + event.feature.getProperty("COMP") + '</br>';
+                                                                htmlpcaern += '<strong>Localidade:</strong> ' + event.feature.getProperty("END") + '</br>';
+                                                                htmlpcaern += '<strong>Proprietário:</strong> ' + event.feature.getProperty("COMP") + '</br>';
+                                                                htmlpcaern += '<strong>Data de Perfuração:</strong> ' + "Sem Informação" + '</br>';
+                                                                htmlpcaern += '<strong>Tipo:</strong> ' + event.feature.getProperty("TIP") + '</br>';
+                                                                htmlpcaern += '<strong>Profundidade(m):</strong> ' + event.feature.getProperty("PRO") + '</br>';
+                                                                htmlpcaern += '<strong>Vazão(m<sup>3</sup>/h):</strong> ' + event.feature.getProperty("VAZ") + '</br>';
+                                                                htmlpcaern += '<strong>Nível Estático(m):</strong> ' + event.feature.getProperty("NES") + '</br>';
+                                                                htmlpcaern += '<strong>Nível Dinâmico(m):</strong> ' + event.feature.getProperty("NDI") + '</br>';
+                                                                htmlpcaern += '<strong>Situação:</strong> ' + event.feature.getProperty("SIT") + '</br>';
+                                                                htmlpcaern += '<strong>Diâmetro(polegadas):</strong> ' + event.feature.getProperty("DIA") + '</br>';
+
+                                                               infoWindowPocosCaern.setContent(htmlpcaern);
+                                                               infoWindowPocosCaern.setPosition(event.latLng);
+                                                               infoWindowPocosCaern.open(map);
+                                                            });
                                                     }
+                                                    var pocossemarhninst = new google.maps.Data();
+                                                        pocossemarhninst.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/pocos_semarh_n_instalados_rn.geojson');
+                                                        pocossemarhninst.setStyle(function(feature){
+                                                        var iconepsemarhninst;
+                                                       
+                                                        iconepsemarhninst='images/marcadores/pocosSEMARHNInstalados.png';
+                                    
+                                                        return({
+		                                                    icon: iconepsemarhninst
+		                                                    })
+                                                        });
+                                                        
+  
+                                                        map: map
+                                                        
+                                                        pocossemarhninst.setMap(map);
+                                                        createClickableMarkerPSemarhNInst(pocossemarhninst, map);
+                                                        function createClickableMarkerPSemarhNInst(marker, map) {
+                                                            var infoWindowPocosSemarhNInst = new google.maps.InfoWindow();
+                                                            google.maps.event.addListener(marker, 'click', function(event) {
+                                                                var htmlpsemarhninst = '<h3 style="color:#3E77AB">' + event.feature.getProperty("Poço_N") + '</h3>' + '<hr>';
+                                                                htmlpsemarhninst += '<strong>Companhia de Perfuração:</strong> ' + event.feature.getProperty("COMP") + '</br>';
+                                                                htmlpsemarhninst += '<strong>Localidade:</strong> ' + event.feature.getProperty("Localidade") + '</br>';
+                                                                htmlpsemarhninst += '<strong>Proprietário:</strong> ' + event.feature.getProperty("Proprietá") + '</br>';
+                                                                htmlpsemarhninst += '<strong>Data de Perfuração:</strong> ' + event.feature.getProperty("DT_Perf") + '</br>';
+                                                                htmlpsemarhninst += '<strong>Profundidade(m):</strong> ' + event.feature.getProperty("Prof_m") + '</br>';
+                                                                htmlpsemarhninst += '<strong>Vazão(m<sup>3</sup>/h):</strong> ' + event.feature.getProperty("Q_m3_h") + '</br>';
+                                                                htmlpsemarhninst += '<strong>Nível Estático(m):</strong> ' + event.feature.getProperty("Ne_m") + '</br>';
+                                                                htmlpsemarhninst += '<strong>Nível Dinâmico(m):</strong> ' + event.feature.getProperty("Nd_m") + '</br>';
+                                                                htmlpsemarhninst += '<strong>Testado:</strong> ' + "Testado" + '</br>';
+
+                                                               infoWindowPocosSemarhNInst.setContent(htmlpsemarhninst);
+                                                               infoWindowPocosSemarhNInst.setPosition(event.latLng);
+                                                               infoWindowPocosSemarhNInst.open(map);
+                                                            });
+                                                    }
+                                                    
+                                                    var pocossemar2016 = new google.maps.Data();
+                                                        pocossemar2016.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/pocos_semarh_2016_rn.geojson');
+                                                        pocossemar2016.setStyle(function(feature){
+                                                        var iconepsemarhninst;
+                                                       
+                                                        iconepsemarh2016='images/marcadores/pocosSEMARH2016.png';
+                                    
+                                                        return({
+		                                                    icon: iconepsemarh2016
+		                                                    })
+                                                        });
+                                                        
+  
+                                                        map: map
+                                                        
+                                                        pocossemar2016.setMap(map);
+                                                        createClickableMarkerPSemarh2016(pocossemar2016, map);
+                                                        function createClickableMarkerPSemarh2016(marker, map) {
+                                                            var infoWindowPocosSemarh2016 = new google.maps.InfoWindow();
+                                                            google.maps.event.addListener(marker, 'click', function(event) {
+                                                                var htmlpsemarh2016 = '<h3 style="color:#3E77AB">' + event.feature.getProperty("N°_POÇO") + '</h3>' + '<hr>';
+                                                                htmlpsemarh2016 += '<strong>Companhia de Perfuração:</strong> ' + event.feature.getProperty("COMP") + '</br>';
+                                                                htmlpsemarh2016 += '<strong>Localidade:</strong> ' + event.feature.getProperty("LOCALIDADE") + '</br>';
+                                                                htmlpsemarh2016 += '<strong>Proprietário:</strong> ' + event.feature.getProperty("PROPR") + '</br>';
+                                                                htmlpsemarh2016 += '<strong>Data de Perfuração:</strong> ' + event.feature.getProperty("DATA_FINAL") + '</br>';
+                                                                htmlpsemarh2016 += '<strong>Profundidade(m):</strong> ' + event.feature.getProperty("PROF___m_") + '</br>';
+                                                                htmlpsemarh2016 += '<strong>Vazão(m<sup>3</sup>/h):</strong> ' + "Sem Informação" + '</br>';
+                                                                htmlpsemarh2016 += '<strong>Situação:</strong> ' + "Situação" + '</br>';
+
+                                                               infoWindowPocosSemarh2016.setContent(htmlpsemarh2016);
+                                                               infoWindowPocosSemarh2016.setPosition(event.latLng);
+                                                               infoWindowPocosSemarh2016.open(map);
+                                                            });
+                                                    }
+                                                    }
+                                                    
 
                                                     // Aquíferos
 
@@ -1429,7 +1539,10 @@
                                                         <img src="images/marcadores/saa.png" />Sist. Abastecimento de Água<br />
                                                         <img src="images/marcadores/pocos.png" />Poços SEMARH<br />
                                                         <img src="images/marcadores/pocoIncra.png" />Poços INCRA<br />
-                                                        <img src="images/marcadores/dessalinizadores.png" />Dessalinizadores<br />
+                                                        <img src="images/marcadores/pocosCAERN.png" />Poços CAERN<br />
+                                                         <img src="images/marcadores/pocosSEMARH2016.png" />Poços SEMARH 2016<br />
+                                                        <img src="images/marcadores/pocosSEMARHNInstalados.png" />Poços SEMARH (Não Instalados)<br />
+                                                        <img src="images/marcadores/dessalinizadores.png" />PAD - Dessalinizadores<br />
                                                         <img src="images/marcadores/OutorgasAna.png" />Outorgas - ANA<br />
                                                         <img src="images/marcadores/Outorgas.png" />Outorgas - IGARN (Uso e Obras)<br />
                                                         <img src="images/marcadores/OutorgasIgarnDispensa.png" />Outorgas - IGARN (Dispensa)<br />
@@ -1437,7 +1550,8 @@
                                                         <img src="images/marcadores/MonitoramentoSup.png" />Pontos de Monitramento Superficiais<br />
                                                         <img src="images/marcadores/Barragens.png" />Barragens de Domínio Público<br />
                                                         <img src="images/marcadores/Barragensprivadas.png" />Barragens de Domínio Privado<br />
-                                                        <img src="images/marcadores/Barragensseminfo.png" />Barragens sem informação de Domínio<br />
+                                                        <img src="images/marcadores/Barragensseminfo.png" />Barragens sem informação de
+                                                        Domínio<br />
                                                         <img src="images/marcadores/Barsub.png" />PSP - Barragens Subterraneas<br />
                                                     </div>
                                                 </asp:Panel>
