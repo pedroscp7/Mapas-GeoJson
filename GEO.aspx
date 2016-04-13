@@ -74,7 +74,7 @@
         {
             background: #F0F2F5;
             border: 1px dashed;
-            padding: 5px 5px 8px 5px;
+            padding: 3px;
             margin: 5px;
             font-size: 12px;
             font-family: Arial, sans-serif;
@@ -83,7 +83,7 @@
         {
             background: #F0F2F5;
             border: 1px dashed;
-            padding: 5px 5px 8px 5px;
+            padding: 3px;
             margin: 5px;
             font-size: 12px;
             font-family: Arial, sans-serif;
@@ -92,7 +92,16 @@
         {
             background: #F0F2F5;
             border: 1px dashed;
-            padding: 3px 5px 5px 5px;
+            padding: 3px;
+            margin: 5px;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+        }
+        #legendadultora
+        {
+            background: #F0F2F5;
+            border: 1px dashed;
+            padding: 3px;
             margin: 5px;
             font-size: 12px;
             font-family: Arial, sans-serif;
@@ -415,7 +424,7 @@
                                                         var content = [];
                                                         content.push('<h3>Municípios</h3>' + '<hr>');
                                                         
-                                                        content.push('<div  class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso.png"></img>&nbsp;&nbsp;Municípos em Colapso</div>' + '<br>');
+                                                        content.push('<div  class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso.png"></img>&nbsp;&nbsp;Colapso</div>' + '<br>');
                                                         content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso1606.png"></img>&nbsp;&nbsp;Colapso em 16/06/16</div>' + '<br>');
                                                         content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso1702.png"></img>&nbsp;&nbsp;Colapso em 17/02/17</div>' + '<br>');
                                                         
@@ -431,7 +440,12 @@
                                                                 htmlgeo += '<strong>População:</strong> ' + event.feature.getProperty("POPULACAO") + '</br>';
                                                                 htmlgeo += '<strong>Área(km<sup>2</sup>):</strong> ' + event.feature.getProperty("AREA_KM") + '</br>';
                                                                 htmlgeo += '<strong>Densidade Demográfica(hab/km<sup>2</sup>):</strong> ' + event.feature.getProperty("DENSIDADE") + '</br>';
-                                                                htmlgeo += '<strong>Link do Documento:</strong> ' + event.feature.getProperty("link") + '</br>';
+                                                                
+                                                                if (event.feature.getProperty('Situacao') == 'Sem informação') {
+                                                                htmlgeo += '<strong>Link do Documento:</strong> ' + "Sem link" + '</br>';
+                                                                } else {
+                                                                htmlgeo += '<strong>Link do Documento:</strong> '+ '<a target="_blank" href="' + event.feature.getProperty("link") + '">' + event.feature.getProperty("link") + '</a>'  + '</br>'
+                                                                }
 
                                                                 if (event.feature.getProperty('Situacao') == null) {
                                                                 htmlgeo += '<strong>Situação de Abastecimento:</strong> ' + "Sem Previsão de Colapso" + '</br>';
@@ -996,11 +1010,25 @@
                                                 
                                                  var massasdagua = new google.maps.Data();
                                                 massasdagua.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/massasdagua.geojson');
-
-                                                massasdagua.setStyle({
-                                                    fillColor: '#92BAFD',
-                                                    strokeWeight: 0.4,
-                                                    strokeColor: '#92BAFD'
+                                                
+                                                massasdagua.setStyle(function(feature) {
+                                              
+                                                                var color = '#92BAFD';
+                                                                var opacity = 0.4;
+                                                                switch (feature.getProperty('NOME')){
+                                                                case 'Oiticica (Projeto)':
+                                                                color = '#0208ff';
+                                                                opacity = 0.9
+                                                                break;
+                                                                }
+                                                                return ({
+                                                                 fillOpacity: opacity,
+                                                                 fillColor: color,
+                                                                 strokeWeight: 0.4,
+                                                                 strokeColor: '#92BAFD'
+                                                                })
+                                                                
+                                                   
                                                 });
                                                 map: map
                                                 massasdagua.setMap(map);
@@ -1049,7 +1077,7 @@
                                                                 break;
                                                                 
                                                                 case 'ADUTORA IMPLANTAÇÃO/CONCLUSÃO':
-                                                                color = '#ff5500';
+                                                                color = '#ffed00';
                                                                 break;
                                                                 
                                                                 case 'ADUTORA DE ENGATE RÁPIDO EXISTENTE':
@@ -1077,6 +1105,24 @@
                                                         map: map
                                                         adutoras.setMap(map);
                                                         createClickablePolyAdutoras(adutoras, map);
+                                                        
+                                                        //legenda Adutoras         
+                                                        var legend = document.createElement('div');
+                                                       legend.id = 'legendadultora';
+                                                        var content = [];
+                                                       
+                                                        content.push('<h3>Adutoras</h3>' + '<hr>');
+                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/Aexistente.png"></img>&nbsp;&nbsp;Existente</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/AimplantaConc.png"></img>&nbsp;&nbsp;Em Fase de Conclusão/Implementação</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/AengateRap.png"></img>&nbsp;&nbsp;Engate Rápido Existente</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/Aemergencial.png"></img>&nbsp;&nbsp;Emergencial</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/AnaoImplantadas.png"></img>&nbsp;&nbsp;Não Implantada</div>' + '<br>');
+
+                                                        legend.innerHTML = content.join('');
+                                                        legend.index = 1;
+                                                        map.controls[google.maps.ControlPosition.LEFT_TOP].push(legend);
+                                                    
+
                                                                     
                                                         function createClickablePolyAdutoras(poly, map) {
                                                             var infoWindowAdutoras = new google.maps.InfoWindow();
@@ -1196,6 +1242,7 @@
                                                         outorgasigarnobras.setMap(map);
                                                            
                                                         createClickableMarkerOutorgasIgarnObras(outorgasigarnobras, map);
+                                                        
                                                         
                                                         outorgasigarnobras.setStyle(function(feature){
                                                         var iconeoutigarnobras;
