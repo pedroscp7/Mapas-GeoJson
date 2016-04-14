@@ -16,7 +16,7 @@
             System.Threading.Thread.Sleep(5000)
            
         End If
-        If (checkpcd.Checked = True Or checkabastecimento.Checked = True Or checkpocos.Checked = True Or checkdessalinizadores.Checked = True Or checkoutorgas.Checked = True Or checkmonitoramento.Checked = True Or checkbarragens.Checked = True Or checkbarsub.Checked = True) Then
+        If (checkpcd.Checked = True Or checkabastecimento.Checked = True Or checkpocos.Checked = True Or checkdessalinizadores.Checked = True Or checkoutorgas.Checked = True Or checkmonitoramento.Checked = True Or checkbarragens.Checked = True Or checkbarsub.Checked = True Or checkadutoras.Checked = True) Then
             PanelLegendaImg.Visible = True
         End If
     End Sub
@@ -74,7 +74,7 @@
         {
             background: #F0F2F5;
             border: 1px dashed;
-            padding: 3px;
+            padding: 5px 5px 8px 5px;
             margin: 5px;
             font-size: 12px;
             font-family: Arial, sans-serif;
@@ -83,7 +83,7 @@
         {
             background: #F0F2F5;
             border: 1px dashed;
-            padding: 3px;
+            padding: 5px 5px 8px 5px;
             margin: 5px;
             font-size: 12px;
             font-family: Arial, sans-serif;
@@ -92,16 +92,7 @@
         {
             background: #F0F2F5;
             border: 1px dashed;
-            padding: 3px;
-            margin: 5px;
-            font-size: 12px;
-            font-family: Arial, sans-serif;
-        }
-        #legendadultora
-        {
-            background: #F0F2F5;
-            border: 1px dashed;
-            padding: 3px;
+            padding: 3px 5px 5px 5px;
             margin: 5px;
             font-size: 12px;
             font-family: Arial, sans-serif;
@@ -150,7 +141,7 @@
     <form id="GEO" runat="server">
     <asp:ToolkitScriptManager ID="GEOFerramentas" runat="server">
     </asp:ToolkitScriptManager>
-    <asp:UpdateProgress ID="ProgressGEO" runat="server" AssociatedUpdatePanelID="UpdateGEO">
+    <asp:UpdateProgress ID="ProgressGEO" runat="server">
         <ProgressTemplate>
             <div class="modalload">
                 <div class="centerload">
@@ -246,7 +237,7 @@
                      <li><a><i class="fa fa-map-marker fa-fw">
                         <div class="icon-bg"></div>
                         </i><input id="checkbarsub" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkbarsub\',\'\')', 0);" type="checkbox" class="vis-hidden new-post-tags" />
-<label for="checkbarsub" class="menu-title">PSP - Bar. Subterraneas</label></a>
+<label for="checkbarsub" class="menu-title">PSP - Bar. Subterrâneas</label></a>
                      </li>
                      
                      <li><a><i class="fa fa-map-marker fa-fw">
@@ -259,6 +250,12 @@
                         <div class="icon-bg"></div>
                         </i><input id="checketa" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checketa\',\'\')', 0);" type="checkbox" class="vis-hidden new-post-tags" />
 <label for="checketa" class="menu-title">CAERN ETA's</label></a>
+                     </li>
+                     
+                     <li><a><i class="fa fa-map-marker fa-fw">
+                        <div class="icon-bg"></div>
+                        </i><input id="checkassentamento" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkassentamento\',\'\')', 0);" type="checkbox" class="vis-hidden new-post-tags" />
+<label for="checkassentamento" class="menu-title">INCRA Assentamentos</label></a>
                      </li>
                 </ul>
                 
@@ -331,6 +328,13 @@
                                 <div class="panel">
                                     <div class="panel-body">
                                         <div class="row" style="margin-left: 3px; margin-right: 3px;">
+                                        <asp:UpdatePanel ID="UpdateColapso" runat="server">
+                                        <ContentTemplate>
+                                        <input id="checkcolapso" type="checkbox" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkcolapso\',\'\')', 0);" /><span>Colapso</span>
+                                        <input id="checkcolapso16" type="checkbox" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkcolapso16\',\'\')', 0);" /><span>Colapso em 2016</span>
+                                        <input id="checkcolapso17" type="checkbox" runat="server" onchange="javascript:setTimeout('__doPostBack(\'checkcolapso17\',\'\')', 0);" /><span>Colapso em 2017</span>
+                                            </ContentTemplate>
+                                            </asp:UpdatePanel>
                                             <div id="map">
                                             </div>
 
@@ -371,7 +375,7 @@
                                                         mapTypeId: google.maps.MapTypeId.TERRAIN
                                                         });
                                                         
-                                                       //var mc = new MarkerClusterer(map);
+                                                       
                                                         
                                                                                                             
                                                     
@@ -381,35 +385,46 @@
  
                                                       if (document.getElementById('checkmunicipios').checked == true)  {  
                                                         var municipios = new google.maps.Data();
-                                                        municipios.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/municipios_rn3.geojson');
+                                                        municipios.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/municipios.geojson');
 
 
                                                         municipios.setStyle(function(feature){
                                                            
-                                                            var color = 'white';
-                                                            switch (feature.getProperty('Situacao')){
+                                                            var colorm = 'white';
+                                                    
+                                                    if (document.getElementById('checkcolapso').checked == true) {
+                                                   switch (feature.getProperty('Situacao')){
                                                                 case 'Colapso':
-                                                              color = '#f30808';
+                                                              colorm = '#f30808';
                                                                 
                                                                 break;
                                                                 
-                                                                case 'Colapso em jun\/16':
-                                                                color = '#f6ee10';
-                                                               
-                                                                break;
-                                                                
-                                                                case 'Colapso em Fev\/17':
-                                                                color = '#16a712';
-                                                                
-                                                                break;
-                                                                
-                                                                case 'null':
-                                                                color = '#ff9900';
-                                                                
-                                                                break;
                                                                 }
+                                                   
+                                                    }
+                                                    
+                                                     if (document.getElementById('checkcolapso16').checked == true) {
+                                                     switch (feature.getProperty('Situacao')){
+                                                                case 'Colapso em jun\/16':
+                                                              colorm = '#f6ee10';
+                                                                
+                                                                break;
+                                                                
+                                                                }
+                                                    }
+                                                    
+                                                    if (document.getElementById('checkcolapso17').checked == true) {
+                                                    switch (feature.getProperty('Situacao')){
+                                                                case 'Colapso em Fev\/17':
+                                                              colorm = '#16a712';
+                                                                
+                                                                break;
+                                                                
+                                                                }
+                                                    }
+                                                    
                                                                 return ({
-                                                                fillColor: color,
+                                                                fillColor: colorm,
                                                                 fillOpacity: 0.6,
                                                                 strokeWeight: 0.5
                                                             })
@@ -422,11 +437,12 @@
                                                           var legend = document.createElement('div');
                                                        legend.id = 'legend3';
                                                         var content = [];
-                                                        content.push('<h3>Municípios</h3>' + '<hr>');
+                                                        content.push('<h3 style="color:#242424">Municípios</h3>' + '<hr>');
                                                         
-                                                        content.push('<div  class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso.png"></img>&nbsp;&nbsp;Colapso</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso1606.png"></img>&nbsp;&nbsp;Colapso em 16/06/16</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Colapso1702.png"></img>&nbsp;&nbsp;Colapso em 17/02/17</div>' + '<br>');
+                                                        content.push('<div  class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/Colapso.png"></img>&nbsp;&nbsp;Colapso</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/Colapso1606.png"></img>&nbsp;&nbsp;Colapso em 16/06/16</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/Colapso1702.png"></img>&nbsp;&nbsp;Colapso em 17/02/17</div>' + '<br>');
+
                                                         
                                                         legend.innerHTML = content.join('');
                                                         legend.index = 1;
@@ -440,12 +456,8 @@
                                                                 htmlgeo += '<strong>População:</strong> ' + event.feature.getProperty("POPULACAO") + '</br>';
                                                                 htmlgeo += '<strong>Área(km<sup>2</sup>):</strong> ' + event.feature.getProperty("AREA_KM") + '</br>';
                                                                 htmlgeo += '<strong>Densidade Demográfica(hab/km<sup>2</sup>):</strong> ' + event.feature.getProperty("DENSIDADE") + '</br>';
-                                                                
-                                                                if (event.feature.getProperty('Situacao') == 'Sem informação') {
-                                                                htmlgeo += '<strong>Link do Documento:</strong> ' + "Sem link" + '</br>';
-                                                                } else {
-                                                                htmlgeo += '<strong>Link do Documento:</strong> '+ '<a target="_blank" href="' + event.feature.getProperty("link") + '">' + event.feature.getProperty("link") + '</a>'  + '</br>'
-                                                                }
+                                                                htmlgeo += '<strong>Link do Documento:</strong> ' + '<a target="_blank" href="' + event.feature.getProperty("link") + '">' + event.feature.getProperty("link") + '</a>'  + '</br>';
+                                                               // + '<a target="_blank" href="' + event.feature.getProperty("link") + '">' + event.feature.getProperty("link") + '</a>'  + '</br>'
 
                                                                 if (event.feature.getProperty('Situacao') == null) {
                                                                 htmlgeo += '<strong>Situação de Abastecimento:</strong> ' + "Sem Previsão de Colapso" + '</br>';
@@ -503,6 +515,9 @@
                                                                 infoWindowDessalinizadores.open(map);
                                                             });
                                                         }
+                                                          var imgdessalinizadores = document.getElementById('paneldessalinizadores');
+                                                          imgdessalinizadores.style.display = 'initial';
+                                                        
                                                     }
 
 
@@ -677,6 +692,11 @@
                                                                infoWindowPocosSemarh2016.open(map);
                                                             });
                                                     }
+                                                    
+                                                     var imgpocos = document.getElementById('panelpocos');
+                                                     imgpocos.style.display = 'initial';
+    
+  
                                                     }
                                                     
 
@@ -744,12 +764,12 @@
                                                        legend.id = 'legend';
                                                         var content = [];
                                                        
-                                                        content.push('<h3>Aquíferos</h3>' + '<hr>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/aluvioesl.png"></img>&nbsp;&nbsp;Aluviões</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/formacaobarreirasl.png"></img>&nbsp;&nbsp;Formação Barreiras</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/formacaojandairal.png"></img>&nbsp;&nbsp;Formação Jandaíra</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/formacaoacul.png"></img>&nbsp;&nbsp;Formação Açu</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/cristalinol.png"></img>&nbsp;&nbsp;Cristalino</div>' + '<br>');
+                                                        content.push('<h3 style="color:#242424">Aquíferos</h3>' + '<hr>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/aluvioesl.png"></img>&nbsp;&nbsp;Aluviões</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/formacaobarreirasl.png"></img>&nbsp;&nbsp;Formação Barreiras</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/formacaojandairal.png"></img>&nbsp;&nbsp;Formação Jandaíra</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/formacaoacul.png"></img>&nbsp;&nbsp;Formação Açu</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/cristalinol.png"></img>&nbsp;&nbsp;Cristalino</div>' + '<br>');
 
                                                         legend.innerHTML = content.join('');
                                                         legend.index = 1;
@@ -796,7 +816,6 @@
                                                             var infoWindowAbastecimento = new google.maps.InfoWindow();
                                                             google.maps.event.addListener(marker, 'click', function(event) {
                                                                 var htmlab = '<h3 style="color:#3E77AB">' + event.feature.getProperty("Obra") + '</h3>' + '<hr>';
-                                                                htmlab += '<strong>Fonte:</strong> ' + event.feature.getProperty("Fonte") + '</br>';
                                                                 htmlab += '<strong>Nome:</strong> ' + event.feature.getProperty("Nome") + '</br>';
                                                                 htmlab += '<strong>Vazão L/h:</strong> ' + event.feature.getProperty("Vazao_l_h") + '</br>';
                                                                 htmlab += '<strong>Descrição:</strong> ' + event.feature.getProperty("Descricao") + '</br>';
@@ -816,7 +835,8 @@
                                                 });
                                                         map: map
                                                         adutorassaa.setMap(map);
-                                                        
+                                                        var imgsaa = document.getElementById('panelsaa');
+                                                        imgsaa.style.display = 'initial';
 
                                                     }
                                                     //Bacias Hidrográficas
@@ -943,24 +963,24 @@
                                                           var legend = document.createElement('div');
                                                        legend.id = 'legend2';
                                                         var content = [];
-                                                        content.push('<h3>Bacias Hidrográficas</h3>' + '<hr>');
+                                                        content.push('<h3 style="color:#242424">Bacias Hidrográficas</h3>' + '<hr>');
                                                         
-                                                        content.push('<div  class="col-lg-12"><img  style="margin-left:3px" src="images/baciasrioapodil.png"></img>&nbsp;&nbsp;Bacia do rio Apodi/Mossoró</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasrioboqueiraol.png"></img>&nbsp;&nbsp;Bacia do rio Boqueirão</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriocearamiriml.png"></img>&nbsp;&nbsp;Bacia do rio Ceará-Mirim</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriocurimataul.png"></img>&nbsp;&nbsp;Bacia do rio Curimataú</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasrioguajul.png"></img>&nbsp;&nbsp;Bacia do rio Guajú</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriojacul.png"></img>&nbsp;&nbsp;Bacia do rio Jacú</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriocatul.png"></img>&nbsp;&nbsp;Bacia do rio Catú</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriomaxaranguapel.png"></img>&nbsp;&nbsp;Bacia do rio Maxaranguape</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriopirangil.png"></img>&nbsp;&nbsp;Bacia do rio Pirangí</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriopiranhasacul.png"></img>&nbsp;&nbsp;Bacia do rio Piranhas/Açú</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriopotengil.png"></img>&nbsp;&nbsp;Bacia do rio Potengi</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriopunaul.png"></img>&nbsp;&nbsp;Bacia do rio Punaú</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriodocel.png"></img>&nbsp;&nbsp;Bacia do rio Rio Doce</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/baciasriotrairil.png"></img>&nbsp;&nbsp;Bacia do rio Trairí</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/bacias15l.png"></img>&nbsp;&nbsp;15-[1-4]</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/bacias16l.png"></img>&nbsp;&nbsp;16-[1-8]</div>' + '<br>');
+                                                        content.push('<div  class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasrioapodil.png"></img>&nbsp;&nbsp;Bacia do rio Apodi/Mossoró</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasrioboqueiraol.png"></img>&nbsp;&nbsp;Bacia do rio Boqueirão</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriocearamiriml.png"></img>&nbsp;&nbsp;Bacia do rio Ceará-Mirim</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriocurimataul.png"></img>&nbsp;&nbsp;Bacia do rio Curimataú</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasrioguajul.png"></img>&nbsp;&nbsp;Bacia do rio Guajú</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriojacul.png"></img>&nbsp;&nbsp;Bacia do rio Jacú</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriocatul.png"></img>&nbsp;&nbsp;Bacia do rio Catú</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriomaxaranguapel.png"></img>&nbsp;&nbsp;Bacia do rio Maxaranguape</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriopirangil.png"></img>&nbsp;&nbsp;Bacia do rio Pirangí</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriopiranhasacul.png"></img>&nbsp;&nbsp;Bacia do rio Piranhas/Açú</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriopotengil.png"></img>&nbsp;&nbsp;Bacia do rio Potengi</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriopunaul.png"></img>&nbsp;&nbsp;Bacia do rio Punaú</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriodocel.png"></img>&nbsp;&nbsp;Bacia do rio Rio Doce</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/baciasriotrairil.png"></img>&nbsp;&nbsp;Bacia do rio Trairí</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/bacias15l.png"></img>&nbsp;&nbsp;15-[1-4]</div>' + '<br>');
+                                                        content.push('<div class="col-lg-12" style="color:#242424"><img  style="margin-left:3px" src="images/bacias16l.png"></img>&nbsp;&nbsp;16-[1-8]</div>' + '<br>');
                                                         legend.innerHTML = content.join('');
                                                         legend.index = 1;
                                                         map.controls[google.maps.ControlPosition.LEFT_TOP].push(legend);
@@ -1030,6 +1050,7 @@
                                                                 
                                                    
                                                 });
+                                                
                                                 map: map
                                                 massasdagua.setMap(map);
                                                 createClickablePolyMassas(massasdagua, map);
@@ -1105,24 +1126,6 @@
                                                         map: map
                                                         adutoras.setMap(map);
                                                         createClickablePolyAdutoras(adutoras, map);
-                                                        
-                                                        //legenda Adutoras         
-                                                        var legend = document.createElement('div');
-                                                       legend.id = 'legendadultora';
-                                                        var content = [];
-                                                       
-                                                        content.push('<h3>Adutoras</h3>' + '<hr>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/Aexistente.png"></img>&nbsp;&nbsp;Existente</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/AimplantaConc.png"></img>&nbsp;&nbsp;Em Fase de Conclusão/Implementação</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/AengateRap.png"></img>&nbsp;&nbsp;Engate Rápido Existente</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/Aemergencial.png"></img>&nbsp;&nbsp;Emergencial</div>' + '<br>');
-                                                        content.push('<div class="col-lg-12"><img  style="margin-left:3px" src="images/Adutoras/AnaoImplantadas.png"></img>&nbsp;&nbsp;Não Implantada</div>' + '<br>');
-
-                                                        legend.innerHTML = content.join('');
-                                                        legend.index = 1;
-                                                        map.controls[google.maps.ControlPosition.LEFT_TOP].push(legend);
-                                                    
-
                                                                     
                                                         function createClickablePolyAdutoras(poly, map) {
                                                             var infoWindowAdutoras = new google.maps.InfoWindow();
@@ -1140,6 +1143,8 @@
                                                                 infoWindowAdutoras.open(map);
                                                             });
                                                         }
+                                                        var imgadutoras = document.getElementById('paneladutoras');
+                                                           imgadutoras.style.display = 'initial';
                                                         
                                                     }
                                                     //PCD's
@@ -1190,6 +1195,15 @@
                                                                 infoWindowPcds.open(map);
                                                             });
                                                       }  
+                                                     
+    var imgpcdsana = document.getElementById('panelpcdsana');
+    imgpcdsana.style.display = 'initial';
+    
+    var imgpcdssemarh = document.getElementById('panelpcdssemarh');
+    imgpcdssemarh.style.display = 'initial';
+
+                                                      
+                                                    
                                                     }
                                                 //Outorgas
                                                     
@@ -1242,7 +1256,6 @@
                                                         outorgasigarnobras.setMap(map);
                                                            
                                                         createClickableMarkerOutorgasIgarnObras(outorgasigarnobras, map);
-                                                        
                                                         
                                                         outorgasigarnobras.setStyle(function(feature){
                                                         var iconeoutigarnobras;
@@ -1340,6 +1353,8 @@
                                             }        
                                             }
                                             }
+                                              var imgoutorgas = document.getElementById('paneloutorgas');
+                                              imgoutorgas.style.display = 'initial';
                                             }
                                             
                                             //Monitoramento
@@ -1411,6 +1426,8 @@
                                                             });
                                                            }
                                                            }
+                                                           var imgmonitoramento = document.getElementById('panelmonitoramento');
+                                                           imgmonitoramento.style.display = 'initial';
                                                            }
 														   
 														   //Barragens
@@ -1471,6 +1488,8 @@
                                                                 infoWindowBarragens.open(map);
                                                             });
                                                         }
+                                                         var imgbarragens = document.getElementById('panelbarragens');
+                                              imgbarragens.style.display = 'initial';
                                                     }
                                                     //PSP-Barragens subterrâneas
                                                            if (document.getElementById('checkbarsub').checked == true) {
@@ -1504,6 +1523,8 @@
                                                                 infoWindowBarragensSub.open(map);
                                                             });
                                                         }
+                                                        var imgbarragenspsp = document.getElementById('panelbarragenspsp');
+                                                           imgbarragenspsp.style.display = 'initial';
                                                     }
                                                       //ETE'S
                                                       if (document.getElementById('checkete').checked == true) {
@@ -1565,16 +1586,23 @@
                                                                 infoWindowEta.open(map);
                                                             });
                                                         }
-                                                    }     
-                                                           }
-                                            
-                                                   
-                                            
-                                            
-                                            
-                                          
+                                                    } 
+                                                    //Assentamentos
+                                                      if (document.getElementById('checkassentamento').checked == true) {
+                                                        var assenta = new google.maps.Data();
+                                                        assenta.loadGeoJson('https://raw.githubusercontent.com/pedroscp7/Mapas-GeoJson/master/assentamentos_Incra.geojson');
+                                                        
 
-                                                
+                                                        map: map
+                                                        assenta.setMap(map);
+                                                      
+                                                         
+
+                                                        
+                                                        }
+                                                       
+                                                           }
+                             
                                                 
                                             </script>
 
@@ -1588,25 +1616,51 @@
                                                 <asp:Panel ID="PanelLegendaImg" runat="server" Visible="false">
                                                     <div class="col-lg-4" style="background-color: #F0F2F5; border: 1px dashed; color: #242424;
                                                         padding-bottom: 5px; padding-top: 5px; margin-top: 10px">
+                                                        
+                                                        <asp:Panel ID="panelpcdsana" runat="server" style="display: none">
                                                         <img src="images/marcadores/pcd.png" />PCD'S - Sala de Situação/RN (ANA)<br />
+                                                        </asp:Panel>
+                                                         <asp:Panel ID="panelpcdssemarh" runat="server" style="display: none">
                                                         <img src="images/marcadores/pcdSEMARH.png" />PCD'S - SEMARH-RN<br />
+                                                        </asp:Panel>
+                                                        <asp:Panel ID="panelsaa" runat="server" style="display: none">
                                                         <img src="images/marcadores/saa.png" />Sist. Abastecimento de Água<br />
+                                                        </asp:Panel>
+                                                        <asp:Panel ID="panelpocos" runat="server" style="display: none">
                                                         <img src="images/marcadores/pocos.png" />Poços SEMARH<br />
                                                         <img src="images/marcadores/pocoIncra.png" />Poços INCRA<br />
                                                         <img src="images/marcadores/pocosCAERN.png" />Poços CAERN<br />
                                                          <img src="images/marcadores/pocosSEMARH2016.png" />Poços SEMARH 2016<br />
                                                         <img src="images/marcadores/pocosSEMARHNInstalados.png" />Poços SEMARH (Não Instalados)<br />
+                                                        </asp:Panel> 
+                                                        <asp:Panel ID="paneldessalinizadores" runat="server" style="display: none">
                                                         <img src="images/marcadores/dessalinizadores.png" />PAD - Dessalinizadores<br />
+                                                        </asp:Panel>
+                                                        <asp:Panel ID="paneloutorgas" runat="server" style="display: none">
                                                         <img src="images/marcadores/OutorgasAna.png" />Outorgas - ANA<br />
                                                         <img src="images/marcadores/Outorgas.png" />Outorgas - IGARN (Uso e Obras)<br />
                                                         <img src="images/marcadores/OutorgasIgarnDispensa.png" />Outorgas - IGARN (Dispensa)<br />
+                                                        </asp:Panel>
+                                                        <asp:Panel ID="panelmonitoramento" runat="server" style="display: none">
                                                         <img src="images/marcadores/MonitoramentoSub.png" />Pontos de Monitramento Subterrâneos<br />
                                                         <img src="images/marcadores/MonitoramentoSup.png" />Pontos de Monitramento Superficiais<br />
+                                                        </asp:Panel>
+                                                        <asp:Panel ID="panelbarragens" runat="server" style="display: none">
                                                         <img src="images/marcadores/Barragens.png" />Barragens de Domínio Público<br />
                                                         <img src="images/marcadores/Barragensprivadas.png" />Barragens de Domínio Privado<br />
                                                         <img src="images/marcadores/Barragensseminfo.png" />Barragens sem informação de
                                                         Domínio<br />
-                                                        <img src="images/marcadores/Barsub.png" />PSP - Barragens Subterraneas<br />
+                                                        </asp:Panel>
+                                                         <asp:Panel ID="panelbarragenspsp" runat="server" style="display: none">
+                                                        <img src="images/marcadores/Barsub.png" />PSP - Barragens Subterrâneas<br />
+                                                        </asp:Panel>
+                                                        <asp:Panel ID="paneladutoras" runat="server" style="display: none">
+                                                        <img src="images/adutoras/AimplantaConc.png" />Adutora em Fase de Conclusão/Implementação<br />
+                                                        <img src="images/adutoras/Aexistente.png" />Adutora Engate Rápido Existente<br />
+                                                        <img src="images/adutoras/Aemergencial.png" />Adutora Emergencial<br />
+                                                        <img src="images/adutoras/AnaoImplantadas.png" />Adutora Não Implantada<br /> 
+                                                        </asp:Panel>
+
                                                     </div>
                                                 </asp:Panel>
                                             </ContentTemplate>
